@@ -1,0 +1,80 @@
+main
+develop
+hotfix
+release
+feature
+
+1. git repo 생성
+
+2. git develop 브랜치 생성
+
+3. 팀원 전체 git clone 
+
+4. git checkout -b develop origin/develop
+4. git checkout -t develop origin/develop
+원격 저장소에 있는 develop 브랜치를 로컬 저장소에 develop 브랜치 가져오기
+원격 저장소에 있는 develop 브랜치, 로컬 저장소에 develop 브랜치 연결
+git branch -r     : 원격 저장소에 있는 브랜치 확인 가능
+git branch        : 로컬 저장소에 있는 브랜치 확인 가능
+git branch -a     : 로컬, 원격 저장소에 있는 브랜치 확인 가능
+
+5. git 페이지에서 default 브랜치를 develop으로 변경
+develop 브랜치 기반으로 개발을 진행하기 때문에
+feature 브랜치 머치 할 때, develop 브랜치로로 병합하도록 설정
+
+6. develop 브랜치에서 feature 브랜치 생성
+- git checkout -b feature/login develop
+- git switch develop, git branch feature/login
+
+7. feature 브랜치에서 개발된 내용을 그대로 develop 브랜치에 푸시
+- git push -u origin feature/login
+- 원격 저장소에도 똑같은 feature/login 브랜치가 생성됨.
+- -u 옵션: 새로운 기능 브랜치와 동일한 이름으로 중앙 원격 저장소의 브랜치로 추가.
+- 이미 동일한 브랜치가 원격 저장소에 있다면 -u 안 해도 됨.
+
+8. github 레포 페이지에서 pull request 생성.
+- 팀원들과 코드 확인 후 develop으로 merge
+
+--------------------------------
+pull request 사용 안 하는 경우
+
+7. 원격 저장소에 있는 develop 브랜치 최신 내용을 pull.
+- git pull origin develop
+
+8. 개발된 feature 브랜치를 로컬 develop 브랜치에 merge.
+- git switch develop
+- git merge --no-ff feature/login
+
+9. 로컬 develop 브랜치를 원격 develop 브랜치로 push
+- git push
+
+10. 로컬 feature 브랜치 삭제
+- git branch -d feature/login
+-----------------------------------
+
+원격 저장소 develop 브랜치 내용 변경 이후 모든 팀원 작업
+
+원격 저장소의 develop 브랜치 내용이 업데이트 되었기 때문에 로컬 저장소 데이터들도 업데이트 진행.
+- git pull origin develop
+
+-----------------------------------
+
+배포하기
+기능 구현이 어느 정도 끝났다면 release 브랜치 생성
+- git switch develop
+- git checkout -b release/1.2
+
+release/1.2 브랜치에서 버그 발견 시 버그 픽스 진행 및 문서 작업
+
+release 브랜치에서 배포 준비가 되었다면, main 브랜치와 develop 브랜치에 merge 후 각각 push
+
+- git switch main
+- git merge --no-ff release/1.2
+병합한 커밋을 의도적으로 만들어 버전 태그를 부여.
+- git tag -a 1.2
+- git push origin main
+
+- git switch develop
+- git merge --no-ff release/1.2
+병합한 커밋을 의도적으로 만들어 버전 태그를 부여.
+- git push origin develop
